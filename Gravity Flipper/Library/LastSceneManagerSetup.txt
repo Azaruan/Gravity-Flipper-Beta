@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 sceneSetups:
-- path: Assets/Main.unity
+- path: Assets/UnityChan/Scenes/Locomotion.unity
   isLoaded: 1
   isActive: 1
-=======
-sceneSetups: []
->>>>>>> master

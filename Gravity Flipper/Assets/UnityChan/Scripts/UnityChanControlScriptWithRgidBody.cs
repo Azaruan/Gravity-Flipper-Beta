@@ -19,16 +19,20 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	public bool useCurves = true;				// Mecanimでカーブ調整を使うか設定する
 												// このスイッチが入っていないとカーブは使われない
 	public float useCurvesHeight = 0.5f;		// カーブ補正の有効高さ（地面をすり抜けやすい時には大きくする）
-
+    
 	// 以下キャラクターコントローラ用パラメタ
 	// 前進速度
 	public float forwardSpeed = 7.0f;
 	// 後退速度
-	public float backwardSpeed = 2.0f;
+	public float backwardSpeed = 0f;
 	// 旋回速度
 	public float rotateSpeed = 2.0f;
 	// ジャンプ威力
-	public float jumpPower = 3.0f; 
+	public float jumpPower = 3.0f;
+
+    public float z_constant_speed = 1f;
+    public bool is_g_reveresed = false;
+
 	// キャラクターコントローラ（カプセルコライダ）の参照
 	private CapsuleCollider col;
 	private Rigidbody rb;
@@ -89,7 +93,16 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 			velocity *= backwardSpeed;	// 移動速度を掛ける
 		}
 		
-		if (Input.GetButtonDown("Jump")) {	// スペースキーを入力したら
+		if (Input.GetButtonDown("Jump")) {  // スペースキーを入力したら
+
+            //flip our toggle
+            is_g_reveresed = !is_g_reveresed;
+
+            
+            
+            
+            //rb.mass = rb.mass * -1;
+            
 
 			//アニメーションのステートがLocomotionの最中のみジャンプできる
 			if (currentBaseState.nameHash == locoState){
@@ -101,10 +114,11 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 				}
 			}
 		}
-		
+        else if (is_g_reveresed)
+            rb.AddForce(Vector3.up * jumpPower, ForceMode.VelocityChange);
 
-		// 上下のキー入力でキャラクターを移動させる
-		transform.localPosition += velocity * Time.fixedDeltaTime;
+        // 上下のキー入力でキャラクターを移動させる
+        transform.localPosition += velocity * Time.fixedDeltaTime;
 
 		// 左右のキー入力でキャラクタをY軸で旋回させる
 		transform.Rotate(0, h * rotateSpeed, 0);	
