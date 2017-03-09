@@ -5,9 +5,11 @@ using UnityEngine;
 public class Movement : MonoBehaviour {
 
     public float speed = 10f;
+    public GameObject Proj;
+    public Transform ts1, ts2;
     Rigidbody rb;
     public bool gravityReversed = false;
-    private bool isFlipped = false;
+
 
     // Use this for initialization
     void Start ()
@@ -25,12 +27,21 @@ public class Movement : MonoBehaviour {
         {
             gravityReversed = !gravityReversed;
         }
+        
         float hAxis = Input.GetAxis("Horizontal");
         rb.transform.Translate((hAxis * Time.fixedDeltaTime * speed), 0, 0, Space.World);
         Vector3 movement = new Vector3(hAxis, 0f, 0f);
         if (movement != Vector3.zero)
         {
             transform.rotation = Quaternion.LookRotation(movement);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+           
+            GameObject go1 = (GameObject)Instantiate(Proj, ts1.position, ts1.rotation);
+            GameObject go2 = (GameObject)Instantiate(Proj, ts2.position, ts2.rotation);
+
         }
     }
 
